@@ -1,0 +1,28 @@
+Considerando o debate na aula, escolheremos uma função de avaliação que não despreze soluções que ultrapassem o valor
+máximo de volume e/ou peso, já que essas soluções podem ainda ser úteis para produzirem soluções melhores no futuro.
+
+    Primeira função de avaliação considerada, durante a aula, mas já desprezada:
+        se volume > 125 ou peso > 125: retorna 0
+        senão: retorna valor
+    Essa função descartaria soluções que passavam apenas um pouco dos limites de volume e peso.
+
+    Segunda função de avaliação considerada:
+        valor / (peso * volume)
+    Não será boa porque irá supervalorizar mochilas quase vazias, com apenas alguns itens pequenos de alto valor.
+
+    Terceira função de avaliação considerada:
+        valor / (peso + volume)
+    Talvez seja muito tolerante com mochilas que passaram dos limites? Hora de experimentar...
+
+Elitismo é um pouco mais simples de implementar, pode ser usada no primeiro teste.
+Mutação pode ser deixada para testes subsequentes, também.
+
+Foi decidido em sala que o percentual de crossover deve ser de 80%, o que faz
+necessário pensar em uma quantidade de cromossomos a manter por geração para
+que o tamanho das gerações se mantenha razoavelmente constante.
+"Fuçando" nos números, chegamos na quase-igualdade 0.56 + (0.56 * 0.8) ~= 1;
+vemos que 56% de cada geração sobreviverá.
+
+Enquanto isso, chegamos no primeiro teste que mostra que mostra que a terceira função
+não é boa, pois supervaloriza itens eficientes e ignora o objetivo de maximizar o valor;
+está avaliando uma mochila com apenas 2 artigos como a melhor possível em alguns casos.
