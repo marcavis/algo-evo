@@ -64,4 +64,3 @@ Chega quase sempre numa solução com volume 117, peso 124 e valor 143; parece i
 A implementação da mutação causou um novo problema, inicialmente - às vezes,
 ela altera o cromossomo melhor classificado, portanto a versão original
 do cromossomo deve ser salva logo que atingir a posição de melhor solução.
-
