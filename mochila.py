@@ -37,6 +37,7 @@ tamanhoGerInicial = 200
 volumeMax = 125
 pesoMax = 125
 tamanhoCromossomo = len(artigos) #25 nesse caso
+eraMelhorAval = 0
 melhorAvaliacao = ()
 
 def main():
@@ -46,19 +47,40 @@ def main():
         q = cromossomo.Cromossomo(tamanhoCromossomo)
         cromossomos.append(q)
         #print(q.genes)
-    for era in range(100):
+    for era in range(50):
         cromossomos = elitismo(cromossomos)
         cromossomos = cromossomos + novaGeracao(cromossomos)
+        realizarMutacoes(cromossomos)
         if(melhorAvaliacao[2] < avaliar(cromossomos[0])):
-            melhorAvaliacao = (era, cromossomos[0].genes, avaliar(cromossomos[0]))
-        print(melhorAvaliacao)
+            melhorAvaliacao = (era, cromossomos[0].genes[:], avaliar(cromossomos[0]))
+        print(melhorAvaliacao[0], melhorAvaliacao[1], melhorAvaliacao[2])
         #crossover(None, None)
+    mostrarMelhorSolucao(melhorAvaliacao)
 
 def avaliar(crom):
     somaVolume = (sum([crom.genes[i] * volume[i] for i in list(range(tamanhoCromossomo))]))
     somaPeso = (sum([crom.genes[i] * peso[i] for i in list(range(tamanhoCromossomo))]))
     somaValor = (sum([crom.genes[i] * valor[i] for i in list(range(tamanhoCromossomo))]))
-    return somaValor / (somaPeso + somaVolume)
+    resultado = 0 if somaVolume <= volumeMax else volumeMax - somaVolume
+    resultado += 0 if somaPeso <= pesoMax else pesoMax - somaPeso
+    return somaValor + somaValor**2 / (somaPeso + somaVolume) + resultado
+
+def mostrarMelhorSolucao(melhorAvaliacao):
+    genes = melhorAvaliacao[1]
+    era = melhorAvaliacao[0]
+    #criar um novo cromossomo com os genes melhor avaliados;
+    #não usamos o cromossomo melhor avaliado diretamente, pois ele pode
+    #ter sofrido mutação
+    crom = cromossomo.Cromossomo(tamanhoCromossomo)
+    crom.genes = genes
+    somaVolume = (sum([genes[i] * volume[i] for i in list(range(tamanhoCromossomo))]))
+    somaPeso = (sum([genes[i] * peso[i] for i in list(range(tamanhoCromossomo))]))
+    somaValor = (sum([genes[i] * valor[i] for i in list(range(tamanhoCromossomo))]))
+    print("Melhor solução encontrada na era  " + str(era) + ", com avaliação " + str(avaliar(crom)))
+    print("Essa solução tem volume = " + str(somaVolume) + ", peso = " + str(somaPeso) + " e valor = " + str(somaValor))
+    print("Vetor de artigos escolhidos:\n" + str(genes))
+    if somaVolume > 125 or somaPeso > 125:
+        print("A solução encontrada é inválida - execute o programa novamente!")
 
 def crossover(c1, c2):
     qtPontosDeCorte = 1 + (tamanhoCromossomo // 20) #2, neste caso
@@ -104,6 +126,14 @@ def novaGeracao(solucoes):
         filhos += crossover(pai1, pai2)
     return filhos
 
+def realizarMutacoes(solucoes):
+    for x in list(range(len(solucoes))):
+        #escolher 3% dos cromossomos para alterar
+        if random.random() < 0.03:
+            for y in list(range(tamanhoCromossomo)):
+                #alterar, em média, um gene
+                if random.random() < (1.0 / tamanhoCromossomo):
+                    solucoes[x].genes[y] = 1 - solucoes[x].genes[y]
 
 if __name__ == "__main__":
     main()

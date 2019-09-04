@@ -1,18 +1,22 @@
-Considerando o debate na aula, escolheremos uma função de avaliação que não despreze soluções que ultrapassem o valor
-máximo de volume e/ou peso, já que essas soluções podem ainda ser úteis para produzirem soluções melhores no futuro.
+Considerando o debate na aula, escolheremos uma função de avaliação que não 
+despreze soluções que ultrapassem o valor máximo de volume e/ou peso, já que
+essas soluções podem ainda ser úteis para produzirem soluções melhores no futuro.
 
     Primeira função de avaliação considerada, durante a aula, mas já desprezada:
         se volume > 125 ou peso > 125: retorna 0
         senão: retorna valor
-    Essa função descartaria soluções que passavam apenas um pouco dos limites de volume e peso.
+    Essa função descartaria soluções que passavam apenas um pouco
+    dos limites de volume e peso.
 
     Segunda função de avaliação considerada:
         valor / (peso * volume)
-    Não será boa porque irá supervalorizar mochilas quase vazias, com apenas alguns itens pequenos de alto valor.
+    Não será boa porque irá supervalorizar mochilas quase vazias,
+    com apenas alguns itens pequenos de alto valor.
 
     Terceira função de avaliação considerada:
         valor / (peso + volume)
-    Talvez seja muito tolerante com mochilas que passaram dos limites? Hora de experimentar...
+    Talvez seja muito tolerante com mochilas que passaram dos limites?
+    Hora de experimentar...
 
 Elitismo é um pouco mais simples de implementar, pode ser usada no primeiro teste.
 Mutação pode ser deixada para testes subsequentes, também.
@@ -26,3 +30,38 @@ vemos que 56% de cada geração sobreviverá.
 Enquanto isso, chegamos no primeiro teste que mostra que mostra que a terceira função
 não é boa, pois supervaloriza itens eficientes e ignora o objetivo de maximizar o valor;
 está avaliando uma mochila com apenas 2 artigos como a melhor possível em alguns casos.
+
+    Quarta função de avaliação considerada:
+        valor^2 / (peso + volume)
+
+Essa função vai na direção certa, pois chega na solução seguinte em 80% dos casos:
+    [1, 1, 1, 1, 1, 1, 0, 0, 1, 0, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+    com avaliação 85.32, normalmente entre a 10ª e 20ª geração.
+O que é promissor, já que uma mochila contendo QUASE todos os artigos é o que se
+pode esperar, pois o peso/volume total dos artigos passa apenas um pouco acima
+do limite de 125.
+Porém, o algoritmo não chega sempre nesse resultado, sendo ocasionais resultados
+onde são selecionados um ou dois itens a menos, o que sugere que o algoritmo
+começa a perder diversidade genética - sugerindo ser necessário implementar
+a mutação.
+Nesse ponto, ainda não verificamos se essa solução é aceitável - talvez esteja
+ligeiramente acima do limite...
+Na verdade não, a solução acima tem volume 112, peso 121, valor 141, 
+melhores podem existir.
+
+    Quinta função de avaliação:
+
+    resultado = 0 if somaVolume <= volumeMax else volumeMax - somaVolume
+    resultado += 0 if somaPeso <= pesoMax else pesoMax - somaPeso
+    return somaValor + somaValor**2 / (somaPeso + somaVolume) + resultado
+
+Parece funcionar bem, com uma penalização moderada para excessos além de 125 peso/volume,
+e onde 2/3 da avaliação são o valor, e 1/3 a eficiência.
+
+Chega quase sempre numa solução com volume 117, peso 124 e valor 143; parece imbatível!
+(Mas ainda falta implementar mutação...)
+
+A implementação da mutação causou um novo problema, inicialmente - às vezes,
+ela altera o cromossomo melhor classificado, portanto a versão original
+do cromossomo deve ser salva logo que atingir a posição de melhor solução.
+
