@@ -1,0 +1,27 @@
+Logo no começo dá pra ver um exemplo de Python ajudando na produtividade:
+Basta uma linha para gerar uma ordenação aleatória de casas de 0 a 7
+(Se necessário alterar para intervalo de 1 a 8, basta outra linha)
+
+    random.sample(range(8), 8)
+
+O método de representação decidido na aula (informar apenas a linha onde há uma
+rainha) também levemente facilita a definição da função de avaliação -
+já que basta checar se há equivalência entre os índices (coluna) e os valores
+do vetor (linha)
+
+    if abs(i - j) == abs(crom[i] - crom[j]):
+
+Cut and crossfill também fica curtinho em Python...
+
+    if x < pontoDeCorte:
+            filho1.append(c1[x])
+            filho2.append(c2[x])
+        else:
+            filho1.append([y for y in c2 if y not in filho1])
+            filho2.append([y for y in c1 if y not in filho2])
+
+Chegamos a escrever que a mutação não seria importante, já que normalmente é 
+fácil achar uma solução, mas às vezes 100 eras são necessárias em vez de 1 a 10;
+também chegamos a uma ocasião onde milhares de eras se passaram sem solução
+encontrada - claramente faltou a diversidade necessária para trazer uma
+solução ao problema.
