@@ -25,3 +25,20 @@ fácil achar uma solução, mas às vezes 100 eras são necessárias em vez de 1
 também chegamos a uma ocasião onde milhares de eras se passaram sem solução
 encontrada - claramente faltou a diversidade necessária para trazer uma
 solução ao problema.
+
+Implementada a mutação, que em 3% dos cromossomos irá fazer uma
+troca simples entre duas posições do cromossomo, esse problema foi resolvido -
+em dezenas de testes, o algoritmo não falhou mais em gerar um tabuleiro,
+embora ocasionalmente sejam necessárias mais de 100 eras para uma solução
+ser encontrada.
+
+A definição de 50 cromossomos como tamanho de cada era tem sido suficiente para
+a solução do problema das 8 rainhas, embora, se alterarmos o código para
+que trabalhe com tabuleiros maiores (por exemplo, 16x16 com 16 rainhas),
+o algoritmo passa por milhares de tentativas de eras sem sucesso, mas consegue
+geralmente encontrar um resultado se alterarmos o tamanho da geração para algo
+maior, como 500 cromossomos. Há, claro, o aumento do tempo de processamento de
+cada era (que ainda não chega perto de 1 segundo por era), e há também o fato de
+que gerações tão grandes tornam o processamento do problema para 8 rainhas
+menos interessante; por isso foram mantidos os 50 cromossomos por geração
+no código a ser entregue.

@@ -21,9 +21,11 @@ def main():
     solucao = False
     while not solucao:
         era += 1
-        print ("Era número " + str(era))
         cromossomos = elitismo(cromossomos)
         cromossomos = cromossomos + novaGeracao(cromossomos)
+        realizarMutacoes(cromossomos)
+        avalM  = avaliar(cromossomos[0])
+        print ("Era número " + str(era) + ", melhor solução tem " + str(avalM) + " conflitos.")
         if avaliar(cromossomos[0]) == 0:
             solucao = True
             print ("Solução encontrada na era número " + str(era) + "!")
@@ -41,26 +43,10 @@ def avaliar(crom):
     return resultado
 
 def mostrarSolucao(crom):
+    print("~" * (tabuleiro * 3 ))
     for i in crom:
         print("| " + " | " * (i - 1) + "Q" + "| " + " | " * (tabuleiro - i ))
         print("~" * (tabuleiro * 3 ))
-
-# def mostrarMelhorSolucao(melhorAvaliacao):
-#     genes = melhorAvaliacao[1]
-#     era = melhorAvaliacao[0]  
-#     #criar um novo cromossomo com os genes melhor avaliados;
-#     #não usamos o cromossomo melhor avaliado diretamente, pois ele pode
-#     #ter sofrido mutação
-#     crom = cromossomo.Cromossomo(tamanhoCromossomo)
-#     crom.genes = genes
-#     somaVolume = (sum([genes[i] * volume[i] for i in list(range(tamanhoCromossomo))]))
-#     somaPeso = (sum([genes[i] * peso[i] for i in list(range(tamanhoCromossomo))]))
-#     somaValor = (sum([genes[i] * valor[i] for i in list(range(tamanhoCromossomo))]))
-#     print("Melhor solução encontrada na era  " + str(era) + ", com avaliação " + str(avaliar(crom)))
-#     print("Essa solução tem volume = " + str(somaVolume) + ", peso = " + str(somaPeso) + " e valor = " + str(somaValor))
-#     print("Vetor de artigos escolhidos:\n" + str(genes))
-#     if somaVolume > 125 or somaPeso > 125:
-#         print("A solução encontrada é inválida - execute o programa novamente!")
 
 def crossover(c1, c2):
     pontoDeCorte = random.choice(range(1, tabuleiro - 1))
@@ -106,6 +92,14 @@ def novaGeracao(solucoes):
         pai2 = pais.pop()
         filhos += crossover(pai1, pai2)
     return filhos
+
+def realizarMutacoes(solucoes):
+    for x in list(range(len(solucoes))):
+        #escolher 3% dos cromossomos para alterar
+        if random.random() < 0.03:
+            #trocar dois genes de lugar
+            i, j = random.sample(range(tabuleiro),2)
+            solucoes[x][i], solucoes[x][j] = solucoes[x][j], solucoes[x][i]
 
 if __name__ == "__main__":
     main()
