@@ -18,11 +18,22 @@ dados = [   (1, 2.0/3),
 floresta = []
 tamGeracao = 50
 
+def novaFuncao(nivel):
+    if random.random() < 0.9 / nivel:
+        novaArvore = arvore.Arvore.novoOperador(None, random.choice(paramF))
+        novaArvore.esq = novaFuncao(nivel + 1)
+        novaArvore.dir = novaFuncao(nivel + 1)
+    else:
+        novaArvore = arvore.Arvore.novaFolha(None, random.choice(paramT))
+    return novaArvore
+
 def main():
     for i in range(tamGeracao):
-        floresta.append(arvore.Arvore.novaFolha(None, random.choice(paramT)))
+        
+
+        floresta.append(novaFuncao(1))
     for a in floresta:
-        print(a, a.valor)
+        print(a, a.resultado())
 
 if __name__ == "__main__":
     main()

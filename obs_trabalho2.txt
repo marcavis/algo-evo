@@ -1,0 +1,11 @@
+A resolução do problema começa com uma implementação simples de árvore binária -
+sempre é um pouco estranho essa implementação em Python, já que os tipos
+estáticos de linguagens como Java permitem criar um esqueleto de classe que 
+faça sentido desde o começo.
+
+É interessante já implementar a função de resolução de um cromossomo - podemos
+ignorar a variável inicialmente, e trabalhar com constantes e operadores.
+
+Nesse ponto já teremos que enfrentar o tratamento de divisões por zero;
+nem lembrava que potenciação também poderia levar a elas...
+    ZeroDivisionError: 0.0 cannot be raised to a negative power

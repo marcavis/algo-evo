@@ -13,4 +13,36 @@ class Arvore:
     
     def novaFolha(self, valor):
         return Arvore(False, None, valor, None, None)
+
+    def resultado(self):
+        if self.temOper:
+            if self.oper == '+':
+                return self.esq.resultado() + self.dir.resultado()
+            elif self.oper == '-':
+                return self.esq.resultado() - self.dir.resultado()
+            elif self.oper == '*':
+                return self.esq.resultado() * self.dir.resultado()
+            elif self.oper == '/':
+                return self.esq.resultado() / self.dir.resultado()
+            else: #potenciação
+                return self.esq.resultado() ** self.dir.resultado()
+        else:
+            return self.valor
+    
+    def __str__(self):
+        print (self.exibicaoLista())
+        if self.temOper:
+            return str(self.esq) + str(self.oper) + str(self.dir)
+        else:
+            return str(self.valor)
+    
+    def conteudo(self, obj):
+        if obj.temOper:
+            return obj.oper
+        return obj.valor
+
+    def exibicaoLista(self):
+        tabela = {}
+        tabela[0] = self.conteudo(self)
+        return tabela
         
