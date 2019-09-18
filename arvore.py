@@ -15,24 +15,28 @@ class Arvore:
         return Arvore(False, None, valor, None, None)
 
     def resultado(self):
-        if self.temOper:
-            if self.oper == '+':
-                return self.esq.resultado() + self.dir.resultado()
-            elif self.oper == '-':
-                return self.esq.resultado() - self.dir.resultado()
-            elif self.oper == '*':
-                return self.esq.resultado() * self.dir.resultado()
-            elif self.oper == '/':
-                return self.esq.resultado() / self.dir.resultado()
-            else: #potenciação
-                return self.esq.resultado() ** self.dir.resultado()
-        else:
-            return self.valor
+        try:
+            if self.temOper:
+                if self.oper == '+':
+                    return self.esq.resultado() + self.dir.resultado()
+                elif self.oper == '-':
+                    return self.esq.resultado() - self.dir.resultado()
+                elif self.oper == '*':
+                    return self.esq.resultado() * self.dir.resultado()
+                elif self.oper == '/':
+                    return self.esq.resultado() / self.dir.resultado()
+                else: #potenciação
+                    return self.esq.resultado() ** self.dir.resultado()
+            else:
+                return float(self.valor)
+        except (ZeroDivisionError, TypeError):
+            return None
+        
     
     def __str__(self):
-        print (self.exibicaoLista())
+        #print (self.exibicaoLista())
         if self.temOper:
-            return str(self.esq) + str(self.oper) + str(self.dir)
+            return "("+ str(self.esq) + " " + str(self.oper) + " " + str(self.dir) + ")"
         else:
             return str(self.valor)
     
@@ -43,6 +47,6 @@ class Arvore:
 
     def exibicaoLista(self):
         tabela = {}
-        tabela[0] = self.conteudo(self)
+        tabela[1] = (self, self.conteudo(self))
         return tabela
         

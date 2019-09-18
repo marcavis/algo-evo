@@ -9,3 +9,26 @@ ignorar a variável inicialmente, e trabalhar com constantes e operadores.
 Nesse ponto já teremos que enfrentar o tratamento de divisões por zero;
 nem lembrava que potenciação também poderia levar a elas...
     ZeroDivisionError: 0.0 cannot be raised to a negative power
+Vamos ignorar esse ponto inicialmente também...
+
+Algo que é importante no começo é poder visualizar as árvores - o programa
+facilmente entende a representação em árvore de (2 + 3) * 4, mas fazer um
+algoritmo para converter a árvore na representação acima pode dar algum trabalho...
+A não ser pelo caminho mais fácil, de sempre rodear pares de folhas com parênteses -
+
+    (-5 / ((5 - 4) - 2)) precisaria de apenas um par, mas a representação
+    mais preguiçosa funciona bem, tornando claro que o resultado da expressão é 5.
+
+Voltando ás divisões por zero... uma solução pode ser dar avaliação zero
+(através do retorno de valor None quando da resolução da expressão) para uma
+aplicação de função que tenha uma divisão por zero; por exemplo:
+    
+    (2 / x) terá avaliação garantida 0 quando x for igual a 2, mas será avaliada
+    normalmente em outros casos (x = 1, ou x > 2) -
+    talvez até seja a função melhor avaliada entre todas as opções.
+    
+    (x / (2 - 2)), porém, sempre terá uma divisão por zero, e será logo descartada.
+
+Há de se verificar uma situação estranha... algumas expressões geram números complexos?
+    (-2 ^ (5 / (5 + 3))) = (-0.5901785320977089+1.424817016411734j)
+

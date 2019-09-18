@@ -16,10 +16,11 @@ dados = [   (1, 2.0/3),
             (9, 90.0/3),
             (10, 110.0/3) ]
 floresta = []
-tamGeracao = 50
+tamGeracao = 200
 
 def novaFuncao(nivel):
-    if random.random() < 0.9 / nivel:
+    #chance de gerar mais um nível na árvore cai pela metade a cada nível
+    if random.random() < 1 / nivel:
         novaArvore = arvore.Arvore.novoOperador(None, random.choice(paramF))
         novaArvore.esq = novaFuncao(nivel + 1)
         novaArvore.dir = novaFuncao(nivel + 1)
@@ -29,8 +30,6 @@ def novaFuncao(nivel):
 
 def main():
     for i in range(tamGeracao):
-        
-
         floresta.append(novaFuncao(1))
     for a in floresta:
         print(a, a.resultado())
