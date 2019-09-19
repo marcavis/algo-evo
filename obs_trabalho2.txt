@@ -32,3 +32,8 @@ aplicação de função que tenha uma divisão por zero; por exemplo:
 Há de se verificar uma situação estranha... algumas expressões geram números complexos?
     (-2 ^ (5 / (5 + 3))) = (-0.5901785320977089+1.424817016411734j)
 
+Há às vezes, alguns erros causados quando o programa tenta calcular números
+extremamente grandes; por exemplo, 3^3^3^3 é um número grande demais para que Python
+calcule, apesar de ser uma árvore não muito difícil de ser gerada.
+Vamos excluir a potenciação do parâmetro F, causa problemas muito complexos
+(incluindo os números imaginários)

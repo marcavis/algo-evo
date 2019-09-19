@@ -1,4 +1,4 @@
-import random
+import random, sys
 
 class Arvore:
     def __init__(self, temOper, oper, valor, esq, dir):
@@ -28,8 +28,13 @@ class Arvore:
                 else: #potenciação
                     return self.esq.resultado() ** self.dir.resultado()
             else:
+                # if isinstance(self.valor, complex):
+                #     print("GGR",self.valor)
+                #     sys.exit()
                 return float(self.valor)
-        except (ZeroDivisionError, TypeError):
+        except (ZeroDivisionError, TypeError) as ex:
+            print (ex)
+            print("erro:", self.esq.resultado(), self.dir.resultado())
             return None
         
     
