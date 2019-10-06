@@ -40,5 +40,6 @@ calcule, apesar de ser uma árvore não muito difícil de ser gerada.
 
 Chegamos a uma opção sobre como avaliar divisões por zero - aplicando uma punição
 na avaliação, similar à pressão pela parcimônia. Porém, se houver divisões por
-zero em todas as entradas, então a árvore deve ser descartada, tendo uma avaliação
+zero em várias entradas, então a árvore deve ser descartada, tendo uma avaliação
 inválida.
+
