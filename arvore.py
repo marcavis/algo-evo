@@ -21,11 +21,35 @@ class Arvore:
             if self.resultado(x) == None:
                 erros += 1
             else:
-                aval += abs(fx - self.resultado(x))    
-        
+                aval += abs(fx - self.resultado(x))
+        # parcimonia = 1.0
+        # if self.altura() > 2:
+        #     parcimonia = 1.0 / (self.altura() - 1) 
+        # aval = aval / parcimonia
         if erros > 2:
             return None
-        return(aval * (2 ** (erros + 1)))
+        return (aval * (2 ** (erros + 1)))
+
+    def altura(self, nivel=0):
+        if self.temOper:
+            return max(self.esq.altura(nivel + 1), self.dir.altura(nivel + 1))
+        else:
+            return nivel
+
+    def pontoDeCrossover(self):
+        cursor = self
+        while True:
+            if not(cursor.esq.temOper and cursor.dir.temOper):
+                #retornar este ponto, já que um dos filhos é uma folha,
+                #seria ruim de trocar
+                return cursor
+            else:
+                if random.random() > 0.5:
+                    cursor = cursor.esq
+                else:
+                    cursor = cursor.dir 
+            if random.random() < 1.0 / self.altura():
+                return cursor
 
     def resultado(self, x):
         try:

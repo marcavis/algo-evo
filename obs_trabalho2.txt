@@ -43,3 +43,4 @@ na avaliação, similar à pressão pela parcimônia. Porém, se houver divisõe
 zero em várias entradas, então a árvore deve ser descartada, tendo uma avaliação
 inválida.
 
+A varredura das árvores para selecionar o ponto de crossover é complicada...

@@ -3,7 +3,7 @@ import sys, random
 import arvore
 
 paramT = list(range(-5, (5 + 1))) + ['x']
-paramF = ['+', '-', "*", "/", "^"] 
+paramF = ['+', '-', "*", "/"] 
 #convertidos em frações para não perderem precisão
 dados = [   (1, 2.0/3),
             (2, 6.0/3),
@@ -16,7 +16,7 @@ dados = [   (1, 2.0/3),
             (9, 90.0/3),
             (10, 110.0/3) ]
 floresta = []
-tamanhoGerInicial = 2000
+tamanhoGerInicial = 20
 
 def novaFuncao(nivel):
     #chance de gerar mais um nível na árvore cai pela metade a cada nível
@@ -32,14 +32,16 @@ def main():
     floresta = []
     for i in range(tamanhoGerInicial):
         floresta.append(novaFuncao(1))
+        print(floresta[-1].altura(), floresta[-1])
     for era in range(5):
         floresta = elitismo(floresta)
         print(len(floresta))
-        #cromossomos = cromossomos + novaGeracao(cromossomos)
+        print(floresta[0], floresta[0].avaliacao(dados))
+        floresta = floresta + novaGeracao(floresta)
         #realizarMutacoes(cromossomos)
         pass
-    # for a in floresta:
-        #print(a)
+    for a in floresta:
+        print(a)
         # if(a.avaliacao(dados) != None and a.avaliacao(dados) < 20):
             # print(a.avaliacao(dados), a)
         # for (x, fx) in dados:
@@ -52,10 +54,47 @@ def elitismo(solucoes):
     # 0.56 + (0.56 * 0.8) ~= 1
     qtManter = int(0.56 * tamanhoGerInicial)
     solucoes = [x for x in solucoes if x.avaliacao(dados) != None]
-    print(len(solucoes))
     solucoes.sort(key = avaliacao)
-    print(solucoes[0], avaliacao(solucoes[0]))
     return solucoes[:qtManter]
+
+def crossover(c1, c2):
+    print()
+    print(c1)
+    print(c2)
+    cursor1 = c1.pontoDeCrossover()
+    cursor2 = c2.pontoDeCrossover()
+    opcao = random.choice([1,2,3,4])
+    if opcao == 1:
+        cursor1.dir, cursor2.esq = cursor2.esq, cursor1.dir
+    elif opcao == 2:
+        cursor1.dir, cursor2.dir = cursor2.dir, cursor1.dir
+    elif opcao == 3:
+        cursor1.esq, cursor2.esq = cursor2.esq, cursor1.esq
+    else:
+        cursor1.esq, cursor2.dir = cursor2.dir, cursor1.esq
+    print(c1)
+    print(c2)
+    return [c1, c2]
+
+#passa por todos os sobreviventes da seleção, incluindo-os para reprodução
+#numa lista, com 80% de chance para cada um.
+#Após isso, embaralhar os candidatos para que os pares não sejam elitistas,
+#e excluir o último cromossomo se a quantidade for ímpar.
+#Depois, cruza os elementos, de dois em dois
+def novaGeracao(solucoes):
+    pais = []
+    filhos = []
+    for x in list(range(len(solucoes))):
+        if random.random() < 0.8:
+            pais.append(solucoes[x])
+    random.shuffle(pais)
+    if len(pais) % 2 == 1:
+        pais.pop()
+    while len(pais) > 0:
+        pai1 = pais.pop()
+        pai2 = pais.pop()
+        filhos += crossover(pai1, pai2)
+    return filhos
 
 def avaliacao(arvore):
     return arvore.avaliacao(dados)
