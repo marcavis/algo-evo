@@ -47,3 +47,12 @@ A varredura das árvores para selecionar o ponto de crossover é complicada... E
 a manipulação das árvores no crossover, em si, também - uma primeira tentativa
 tem causado alterações nos pais e não só nos filhos. É necessário criar uma
 função que gere uma cópia de uma árvore!
+
+Implementada a mutação, vê-se que ela ajuda um pouco a combater a redução
+na diversidade genética conforme as eras passam.
+
+O algoritmo está entregando a resposta correta na maioria dos casos, mas não
+está com funcionamento ideal - talvez pelo fato de que pequenas alterações na árvore
+causam grandes mudanças nos resultados das aplicações da função, o que é uma
+certa dificuldade para o uso de programação genética, que idealmente espera
+obter algumas melhoras ocasionais quando existem mudanças em alguns poucos genes.
