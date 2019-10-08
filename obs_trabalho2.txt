@@ -43,4 +43,7 @@ na avaliação, similar à pressão pela parcimônia. Porém, se houver divisõe
 zero em várias entradas, então a árvore deve ser descartada, tendo uma avaliação
 inválida.
 
-A varredura das árvores para selecionar o ponto de crossover é complicada...
+A varredura das árvores para selecionar o ponto de crossover é complicada... E
+a manipulação das árvores no crossover, em si, também - uma primeira tentativa
+tem causado alterações nos pais e não só nos filhos. É necessário criar uma
+função que gere uma cópia de uma árvore!

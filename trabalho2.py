@@ -2,8 +2,8 @@
 import sys, random 
 import arvore
 
-paramT = list(range(-5, (5 + 1))) + ['x']
-paramF = ['+', '-', "*", "/"] 
+paramT = list(range(-5, (5 + 1))) + ['x', 'x']
+paramF = ['+', '-', "*", "/", "^"] 
 #convertidos em frações para não perderem precisão
 dados = [   (1, 2.0/3),
             (2, 6.0/3),
@@ -16,7 +16,7 @@ dados = [   (1, 2.0/3),
             (9, 90.0/3),
             (10, 110.0/3) ]
 floresta = []
-tamanhoGerInicial = 20
+tamanhoGerInicial = 4000
 
 def novaFuncao(nivel):
     #chance de gerar mais um nível na árvore cai pela metade a cada nível
@@ -32,21 +32,30 @@ def main():
     floresta = []
     for i in range(tamanhoGerInicial):
         floresta.append(novaFuncao(1))
-        print(floresta[-1].altura(), floresta[-1])
-    for era in range(5):
+    floresta = [x for x in floresta if x.avaliacao(dados) != None]
+    melhorAvaliacao = floresta[0].avaliacao(dados)
+    melhorArvore = floresta[0]
+    for era in range(1, 41):
         floresta = elitismo(floresta)
-        print(len(floresta))
-        print(floresta[0], floresta[0].avaliacao(dados))
         floresta = floresta + novaGeracao(floresta)
-        #realizarMutacoes(cromossomos)
-        pass
-    for a in floresta:
-        print(a)
-        # if(a.avaliacao(dados) != None and a.avaliacao(dados) < 20):
-            # print(a.avaliacao(dados), a)
-        # for (x, fx) in dados:
-        #     print(a.resultado(x), fx)
-        #print()
+        realizarMutacoes(floresta)
+
+        floresta = [x for x in floresta if x.avaliacao(dados) != None]
+        floresta.sort(key = avaliacao)
+
+        if floresta[0].avaliacao(dados) < melhorAvaliacao:
+            melhorAvaliacao = floresta[0].avaliacao(dados)
+            melhorArvore = floresta[0].clonar()
+        print("Era", era)
+        print("Melhor árvore:", floresta[0])
+        print("Com avaliação:", floresta[0].avaliacao(dados))
+        if melhorAvaliacao < 1.0:
+            break
+
+    print()
+    print("Verificação da melhor função:", melhorArvore)
+    for (x, y) in dados:
+        print("f(" + str(x) + "): Esperado: ", y, "Encontrado: " + str(melhorArvore.resultado(x)))
 
 def elitismo(solucoes):
     #manter 56% da geração anterior, para que 80% dos sobreviventes
@@ -57,10 +66,30 @@ def elitismo(solucoes):
     solucoes.sort(key = avaliacao)
     return solucoes[:qtManter]
 
+def realizarMutacoes(solucoes):
+    for a in solucoes:
+        if random.random() < 0.04:
+            nivelAtual = 1
+            cursor = a
+            while cursor.esq.temOper and cursor.dir.temOper:
+                if random.random() < 0.5:
+                    nivelAtual += 1
+                    if random.random() < 0.5:
+                        cursor = cursor.esq
+                    else:
+                        cursor = cursor.dir
+                else:
+                    break
+            if random.random() < 0.5:
+                cursor.esq = novaFuncao(nivelAtual)
+            else:
+                cursor.dir = novaFuncao(nivelAtual)
+
+
 def crossover(c1, c2):
-    print()
-    print(c1)
-    print(c2)
+    # print()
+    # print(c1)
+    # print(c2)
     cursor1 = c1.pontoDeCrossover()
     cursor2 = c2.pontoDeCrossover()
     opcao = random.choice([1,2,3,4])
@@ -72,8 +101,8 @@ def crossover(c1, c2):
         cursor1.esq, cursor2.esq = cursor2.esq, cursor1.esq
     else:
         cursor1.esq, cursor2.dir = cursor2.dir, cursor1.esq
-    print(c1)
-    print(c2)
+    # print(c1)
+    # print(c2)
     return [c1, c2]
 
 #passa por todos os sobreviventes da seleção, incluindo-os para reprodução
@@ -93,7 +122,7 @@ def novaGeracao(solucoes):
     while len(pais) > 0:
         pai1 = pais.pop()
         pai2 = pais.pop()
-        filhos += crossover(pai1, pai2)
+        filhos += crossover(pai1.clonar(), pai2.clonar())
     return filhos
 
 def avaliacao(arvore):
